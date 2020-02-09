@@ -1,0 +1,72 @@
+
+- name: Deploying Ansible Playbook
+
+  hosts: all
+
+  vars:
+
+    nginx_reverse_proxy: "true"
+    nginx_allow_unencrypt: "true"
+    nginx_origin_domain: "http://cockpit.home.lab"
+
+  tasks:
+
+  - name: Set Hostname
+    command: hostnamectl set-hostname centos8
+
+  - name: Installing Base packages
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - bash-completion
+      - vim
+
+  - name: Installing Container tools
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - cockpit
+      - podman
+
+  - name: Configure Cockpit if using reverse proxy
+    copy:
+      dest: /etc/cockpit/cockpit.conf
+      content: |
+        [WebService]
+        Origins = {{ nginx_origin_domain }}
+        ProtocolHeader = X-Forwarded-Proto
+        AllowUnencrypted = {{ nginx_allow_unencrypt }}
+      mode: '0644'
+    when: 'nginx_reverse_proxy == "true"'
+
+  - name: Copying nginx reverse proxy configuration for cockpit
+    template:
+      src: templates/nginx.conf
+      dest: /root/nginx.conf
+    when: 'nginx_reverse_proxy == "true"'
+
+  - name: Fetching generated nginx configuration
+    fetch:
+      src: /root/nginx.conf
+      dest: ../nginx.conf
+      flat: yes
+
+  - name: Starting Cockpit service
+    systemd:
+      name: cockpit
+      state: started
+      enabled: yes
+
+  - name: Open Firewall port for Cockpit
+    firewalld:
+      service: cockpit
+      permanent: yes
+      state: enabled
+
+  - name: Restart FirewallD
+    systemd:
+      name: firewalld
+      state: restarted
+
