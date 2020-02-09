@@ -6,7 +6,7 @@ you are able to use [Cockpit](https://cockpit-project.org/) to manage your
 CentOS host. If you are using a reverse proxy, you can enable this in the
 playbook so that a nginx configuration will be generated.
 
-![CentOS-Cockpit](/files/centos-cockpit.png)
+![CentOS-Cockpit](/files/centos8-cockpit.png)
 
 Requirements
 ------------
