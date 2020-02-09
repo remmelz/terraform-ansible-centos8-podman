@@ -53,6 +53,30 @@ Execute build.sh script to start building the host.
 To destory the VM:
 
     # ./build destroy
+    
+Reverse Proxy with Nginx
+------------------------
+Cockpit uses web sockets to deliver active content back and forth between 
+the client and the server in real time. 
+
+    +-------+    +-------+    +-------+
+    |Browser|    |Nginx  |    |Cockpit|
+    |       +--->+:443   +--->+:9090  |
+    |       |    |:80    |    |       |
+    +-------+    +-------+    +-------+
+
+To enable Nginx proxy, enable the following variables in the Ansible Playbook
+Open the ./ansible/playbook.yml file and modify the following settings to your
+needs:
+
+    vars:
+
+      nginx_reverse_proxy: "true"
+      nginx_allow_unencrypt: "true"
+      nginx_origin_domain: "http://cockpit.home.lab"
+
+When the Ansible playbook has finished a nginx.conf file is generated in the
+root of the Git repo.
 
 License
 -------
