@@ -23,7 +23,7 @@ Any pre-requisites that is needed for a successful deployment.
 Creating a Template Image
 --------------------------
 
-Create a template VM CentOS 8 image with SSH deamon running.
+Create a (very minimal) template VM CentOS 8 image with SSH deamon running.
 Make sure the OS image contains the public key of your main host.
 This way Ansible can start the playbook once the SSH port of the VM is up.
 Edit the */resources.tf files and set the source.
