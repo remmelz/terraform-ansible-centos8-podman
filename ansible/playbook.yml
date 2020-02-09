@@ -5,8 +5,8 @@
 
   vars:
 
-    nginx_reverse_proxy: "true"
-    nginx_allow_unencrypt: "true"
+    nginx_reverse_proxy: "false"
+    nginx_allow_unencrypt: "false"
     nginx_origin_domain: "http://cockpit.home.lab"
 
   tasks:
