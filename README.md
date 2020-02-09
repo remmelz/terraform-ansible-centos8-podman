@@ -76,7 +76,11 @@ needs:
       nginx_origin_domain: "http://cockpit.home.lab"
 
 When the Ansible playbook has finished a nginx.conf file is generated in the
-root of the Git repo.
+root of the Git repo. You can copy the configuration file to the location
+of the Nginx configs.
+
+    cp ./nginx.conf /etc/nginx/conf.d/cockpit.conf
+    systemctl restart nginx
 
 License
 -------
