@@ -43,7 +43,7 @@
 
   - name: Copying nginx reverse proxy configuration for cockpit
     template:
-      src: templates/nginx.conf
+      src: templates/nginx.conf.j2
       dest: /root/nginx.conf
     when: 'nginx_reverse_proxy == "true"'
 
