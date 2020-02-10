@@ -27,8 +27,9 @@
       name: "{{ item }}"
       state: present
     with_items:
-      - cockpit
       - podman
+      - cockpit
+      - cockpit-podman
 
   - name: Configure Cockpit if using reverse proxy
     copy:
