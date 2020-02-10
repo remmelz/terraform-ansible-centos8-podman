@@ -52,6 +52,7 @@
       src: /root/nginx.conf
       dest: ../nginx.conf
       flat: yes
+    when: 'nginx_reverse_proxy == "true"'
 
   - name: Starting Cockpit service
     systemd:
