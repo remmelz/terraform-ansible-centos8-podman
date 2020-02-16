@@ -39,6 +39,15 @@ which packer \
 #####################################################
 
 cd ./packer || exit 1
+
+echo -e "\e[96m[Packer]\e[39m"
+echo "Downloading ISO image.."
+wget -q --show-progress \
+  --no-clobber \
+  --continue \
+  --directory-prefix=./iso \
+  `cat iso_source.txt`
+
 if [[ $1 != "destroy" ]]; then
   packer build centos8_base.json
   if [[ -z `ls ./image/ | grep 'qcow2$'` ]]; then
@@ -138,6 +147,11 @@ done < hosts
 echo
 echo -e "\e[96m[Ansible Playbook]\e[39m"
 ansible-playbook -i ./inventory.ini playbook.yml
+cd ..
+
+#####################################################
+# Cleanup files
+#####################################################
 
 exit $?
 
