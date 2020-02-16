@@ -20,14 +20,38 @@ Any pre-requisites that is needed for a successful deployment.
  - Netcat for checking if SSH daemon is running
  - Optional: Nginx for reverse proxying
 
+How it works
+-------------
+ - Building CentOS8 Base template with Packer
+   - CentOS 8 DVD ISO image will be downloaded and verified
+   - The default password is 'changeme'
+ - Terraform will be used to build the Virtual Machine
+   - The defined specifications will be used
+ - Provisioning with Ansible
+   - Ansible Playbook will be executed on the target host
+
+
 Example
 -------
 
 Execute build.sh script to start building the host.
 
-    # ./build.sh 
+    # ./build.sh
+    
+To check the Packer progress, you can use VNC to see the status. If 
+you are building on a remote host, use port forwarding first, then
+connect locally.
 
-To destory the VM:
+    ssh -L 5901:localhost:<packer port> <build host>
+    vnc localhost:1
+
+After building you should be able to login to the Cockpit dashboard.
+
+    http://<host ip>:9090
+    root
+    changeme
+
+To destroy the Virtual Machine:
 
     # ./build destroy
     
