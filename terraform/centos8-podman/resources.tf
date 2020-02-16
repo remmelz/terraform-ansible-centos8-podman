@@ -7,16 +7,16 @@ provider "libvirt" {
 resource "libvirt_volume" "centos8" {
 
   count = 1
-  name = "centos8-cockpit${count.index +1}.qcow2"
+  name = "centos8-podman${count.index +1}.qcow2"
   pool = "default"
-  source = "/var/lib/libvirt/images/CentOS-8.x86_64-kvm-and-xen.qcow2"
+  source = "../../packer/image/CentOS-8.x86_64-kvm-and-xen.qcow2"
   format = "qcow2"
 }
 
 resource "libvirt_domain" "centos8" {
 
   count  = 1
-  name   = "centos8-cockpit${count.index +1}"
+  name   = "centos8-podman${count.index +1}"
   memory = "1024"
   vcpu   = 2
 

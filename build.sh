@@ -25,13 +25,28 @@ function getIP {
 # Sanity check
 #####################################################
 
-which terraform \
+which packer \
+      terraform \
       terraform-provider-libvirt \
       ansible \
       virsh \
       nc > /dev/null
 
 [[ $? != 0 ]] && exit $?
+
+#####################################################
+# Run Packer
+#####################################################
+
+cd ./packer || exit 1
+if [[ $1 != "destroy" ]]; then
+  packer build centos8_base.json
+  if [[ -z `ls ./image/ | grep 'qcow2$'` ]]; then
+    echo "Error: No base template found in ./packer/image"
+    exit 1
+  fi
+fi
+cd ..
 
 #####################################################
 # Run Terraform
@@ -90,7 +105,7 @@ for resource in `ls -d ../terraform/*/`; do
     done
     echo -e "${resource}: \e[32m`getIP ${resource}`\e[39m"
     echo "`getIP ${resource}` ${resource}" >> hosts
-    echo "${resource} ansible_host=`getIP ${resource}`" >> inventory.ini
+    echo "${resource} ansible_host=`getIP ${resource}` ansible_password=changeme" >> inventory.ini
     let counter=${counter}+1
   done
 done

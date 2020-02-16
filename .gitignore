@@ -3,3 +3,5 @@ ansible/hosts
 ansible/*.pub
 terraform/*/.terraform
 terraform/*/terraform.tfstate*
+packer/image
+packer/packer_cache

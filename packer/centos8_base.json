@@ -1,0 +1,44 @@
+
+{
+  "builders":
+  [
+    {
+      "type": "qemu",
+      "headless": "true",
+      "accelerator": "kvm",
+      "qemuargs": [
+        [ "-m", "2048M" ],
+        [ "-smp", "cpus=2,maxcpus=16,cores=4" ]
+      ],
+
+      "disk_interface": "virtio",
+      "disk_size": "20G",
+      "format": "qcow2",
+      "net_device": "virtio-net",
+
+      "iso_url": "http://isoredirect.centos.org/centos/8/isos/x86_64/CentOS-8.1.1911-x86_64-dvd1.iso",
+      "iso_checksum": "3ee3f4ea1538e026fff763e2b284a6f20b259d91d1ad5688f5783a67d279423b",
+      "iso_checksum_type": "sha256",
+
+      "output_directory": "image",
+      "vm_name": "CentOS-8.x86_64-kvm-and-xen.qcow2",
+
+      "http_directory": "http",
+
+      "ssh_username": "root",
+      "ssh_password": "changeme",
+      "ssh_port": 22,
+      "ssh_timeout": "30m",
+
+      "boot_wait": "10s",
+      "boot_command": [
+        "<up><wait><tab>",
+        "text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos8-ks.cfg",
+        "<enter><wait>"
+      ],
+
+      "shutdown_command": "shutdown -h now"
+    }
+  ]
+}
+
